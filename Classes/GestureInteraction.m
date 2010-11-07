@@ -24,7 +24,7 @@
 @synthesize containerView;
 
 + (NSString *)friendlyName {
-  return @"Basic Gestures";
+  return @"Gesture Interaction";
 }
 
 - (void)setupUI {
@@ -149,10 +149,5 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)other {
   return ([recognizer view] == [other view]); 
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-  return YES;
-}
-
 
 @end

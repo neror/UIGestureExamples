@@ -10,6 +10,7 @@
 #import "DetailViewController.h"
 #import "ExampleController.h"
 #import "GestureInteraction.h"
+#import "DiscreteGestures.h"
 
 @implementation RootViewController
 
@@ -23,7 +24,7 @@
   self.clearsSelectionOnViewWillAppear = NO;
   self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
   
-  examples_ = [[NSArray alloc] initWithObjects:[GestureInteraction class], nil];
+  examples_ = [[NSArray alloc] initWithObjects:[DiscreteGestures class], [GestureInteraction class], nil];
 }
 
 - (void)dealloc {
