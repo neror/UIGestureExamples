@@ -8,7 +8,8 @@
 
 #import "RootViewController.h"
 #import "DetailViewController.h"
-
+#import "ExampleController.h"
+#import "GestureInteraction.h"
 
 @implementation RootViewController
 
@@ -21,33 +22,20 @@
   [super viewDidLoad];
   self.clearsSelectionOnViewWillAppear = NO;
   self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
+  
+  examples_ = [[NSArray alloc] initWithObjects:[GestureInteraction class], nil];
 }
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)dealloc {
+  [detailViewController release];
+  [examples_ release];
+  [super dealloc];
 }
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
   return YES;
 }
-
 
 #pragma mark -
 #pragma mark Table view data source
@@ -56,9 +44,8 @@
   return 1;
 }
 
-
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-  return 10;
+  return [examples_ count];
 }
 
 
@@ -72,80 +59,20 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
   }
   
-  // Configure the cell.
-  cell.textLabel.text = [NSString stringWithFormat:@"Row %d", indexPath.row];
+  Class example = [examples_ objectAtIndex:indexPath.row];
+  
+  cell.textLabel.text = [example friendlyName];
   return cell;
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  /*
-   When a row is selected, set the detail view controller's detail item to the item associated with the selected row.
-   */
-  detailViewController.detailItem = [NSString stringWithFormat:@"Row %d", indexPath.row];
-}
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-  // Releases the view if it doesn't have a superview.
-  [super didReceiveMemoryWarning];
-  
-  // Relinquish ownership any cached data, images, etc. that aren't in use.
-}
-
-- (void)viewDidUnload {
-  // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-  // For example: self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-  [detailViewController release];
-  [super dealloc];
+  Class exampleClass = [examples_ objectAtIndex:indexPath.row];
+  ExampleController *example = [[exampleClass alloc] initWithNibName:nil bundle:nil];
+  detailViewController.exampleController = example;
+  [example release];
 }
 
 @end

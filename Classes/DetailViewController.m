@@ -11,42 +11,82 @@
 
 @interface DetailViewController ()
 
-  @property (nonatomic, retain) UIPopoverController *popoverController;
-
-  - (void)configureView;
-
+@property (nonatomic, retain) UIPopoverController *popoverController;
+- (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer;
+- (void)resetCurrentExample;
 @end
 
 @implementation DetailViewController
 
-@synthesize toolbar, popoverController, detailItem, detailDescriptionLabel;
+@synthesize toolbar;
+@synthesize popoverController;
+@synthesize exampleController;
+@synthesize contentView;
+@synthesize titleLabel;
+
+- (void)viewDidLoad {
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+  [self.view addGestureRecognizer:longPress];
+  [longPress release];
+}
+
+- (void)viewDidUnload {
+  self.popoverController = nil;
+}
+
+- (void)dealloc {
+  [popoverController release];
+  [toolbar release];
+  [exampleController release];
+  [contentView release];
+  [titleLabel release];
+  [super dealloc];
+}
+
+#pragma mark -
+#pragma mark Touch Gesture Handling
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
+  if([recognizer state] == UIGestureRecognizerStateBegan) {
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    UIMenuItem *resetMenuItem = [[UIMenuItem alloc] initWithTitle:@"Reset Example" action:@selector(resetCurrentExample)];
+    CGPoint location = [recognizer locationInView:[recognizer view]];
+    
+    BOOL fr = [self.view becomeFirstResponder];
+    NSLog(@"%@ first responder", fr ? @"Became" : @"Couldn't become");
+    [menuController setMenuItems:[NSArray arrayWithObject:resetMenuItem]];
+    [menuController setTargetRect:CGRectMake(location.x, location.y, 0, 0) inView:[recognizer view]];
+    [menuController setMenuVisible:YES animated:YES];
+    [resetMenuItem release];
+  }
+}
+
+- (void)resetCurrentExample {
+  [self.exampleController resetExample];
+}
 
 #pragma mark -
 #pragma mark Managing the detail item
 
-/*
- When setting the detail item, update the view and dismiss the popover controller if it's showing.
- */
-- (void)setDetailItem:(id)newDetailItem {
-  if (detailItem != newDetailItem) {
-    [detailItem release];
-    detailItem = [newDetailItem retain];
+- (void)setExampleController:(ExampleController *)newExample {
+  if (exampleController != newExample) {
+    [exampleController viewWillDisappear:YES];
+    [newExample viewWillAppear:YES];
+    [exampleController.view removeFromSuperview];
+    [self.contentView addSubview:newExample.view];
+    [exampleController viewDidDisappear:YES];
+    [newExample viewDidAppear:YES];
     
-    // Update the view.
-    [self configureView];
+    [self.titleLabel setText:[[newExample class] friendlyName]];
+    
+    [exampleController release];
+    exampleController = [newExample retain];
   }
 
   if (self.popoverController != nil) {
     [self.popoverController dismissPopoverAnimated:YES];
   }        
 }
-
-
-- (void)configureView {
-  // Update the user interface for the detail item.
-  detailDescriptionLabel.text = [detailItem description];   
-}
-
 
 #pragma mark -
 #pragma mark Split view support
@@ -57,7 +97,7 @@
        forPopoverController:(UIPopoverController*)pc
 {
     
-  barButtonItem.title = @"Root List";
+  barButtonItem.title = @"Gesture Examples";
   NSMutableArray *items = [[toolbar items] mutableCopy];
   [items insertObject:barButtonItem atIndex:0];
   [toolbar setItems:items animated:YES];
@@ -84,63 +124,12 @@
   return YES;
 }
 
+@end
 
-#pragma mark -
-#pragma mark View lifecycle
+@implementation DetailView
 
-/*
- // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
- */
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-
-- (void)viewDidUnload {
-  // Release any retained subviews of the main view.
-  // e.g. self.myOutlet = nil;
-  self.popoverController = nil;
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-/*
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-*/
-
-- (void)dealloc {
-  [popoverController release];
-  [toolbar release];
-  [detailItem release];
-  [detailDescriptionLabel release];
-  [super dealloc];
+- (BOOL)canBecomeFirstResponder {
+  return YES;
 }
 
 @end
