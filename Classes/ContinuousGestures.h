@@ -25,17 +25,12 @@
 #import <UIKit/UIKit.h>
 #import "ExampleController.h"
 
-@interface DetailViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate> {
-  UIPopoverController *popoverController;
+@interface ContinuousGestures : ExampleController <UIGestureRecognizerDelegate> {
 }
 
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, retain) ExampleController *exampleController;
-@property (nonatomic, retain) IBOutlet UIView *contentView;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-
-@end
-
-@interface DetailView : UIView
+@property (nonatomic, retain) IBOutlet UIView *redView;
+@property (nonatomic, retain) IBOutlet UIView *greenView;
+@property (nonatomic, retain) IBOutlet UIView *blueView;
+@property (nonatomic, retain) IBOutlet UIView *orangeView;
 
 @end

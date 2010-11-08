@@ -1,10 +1,26 @@
-//
-//  BasicGestures.m
-//  UIGestureExamples
-//
-//  Created by Nathan Eror on 11/6/10.
-//  Copyright 2010 Free Time Studios. All rights reserved.
-//
+/*
+ The MIT License
+ 
+ Copyright (c) 2010 Free Time Studios and Nathan Eror
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+*/
 
 #import "GestureInteraction.h"
 
@@ -64,10 +80,10 @@
   [tap release];
   
   UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipe:)];
-  [swipe setDirection:UISwipeGestureRecognizerDirectionRight];
+  [swipe setDirection:UISwipeGestureRecognizerDirectionRight | UISwipeGestureRecognizerDirectionLeft];
   [self.swipeLabel addGestureRecognizer:swipe];
   [swipe release];
-  
+
   UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
   pinch.delegate = self;
   [self.containerView addGestureRecognizer:pinch];
@@ -79,10 +95,12 @@
   [self.containerView addGestureRecognizer:panContainerView];
   [panContainerView release];
   
+
   UIPanGestureRecognizer *panMainView = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
   [self.view addGestureRecognizer:panMainView];
   [panMainView release];
-  
+
+
 }
 
 - (void)viewDidUnload {
@@ -121,7 +139,6 @@
 - (void)handlePinch:(UIPinchGestureRecognizer *)recognizer {
   [[recognizer view] setBackgroundColor:[stateColorMap_ objectForKey:[NSNumber numberWithInt:[recognizer state]]]];
   if([recognizer state] == UIGestureRecognizerStateBegan || [recognizer state] == UIGestureRecognizerStateChanged) {
-//    CGPoint centroid = [recognizer locationInView:[recognizer view]];
     [recognizer view].transform = CGAffineTransformScale([[recognizer view] transform], [recognizer scale], [recognizer scale]);
     [recognizer setScale:1];
   }

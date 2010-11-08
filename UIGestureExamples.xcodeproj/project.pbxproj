@@ -22,6 +22,8 @@
 		DF5A127F1285C6FA0034A491 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF5A127E1285C6FA0034A491 /* QuartzCore.framework */; };
 		DF6DD39512872D3500158FB2 /* DiscreteGestures.m in Sources */ = {isa = PBXBuildFile; fileRef = DF6DD39312872D3500158FB2 /* DiscreteGestures.m */; };
 		DF6DD39612872D3500158FB2 /* DiscreteGestures.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF6DD39412872D3500158FB2 /* DiscreteGestures.xib */; };
+		DF6DD4EF12874F5600158FB2 /* ContinuousGestures.m in Sources */ = {isa = PBXBuildFile; fileRef = DF6DD4ED12874F5600158FB2 /* ContinuousGestures.m */; };
+		DF6DD4F012874F5600158FB2 /* ContinuousGestures.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF6DD4EE12874F5600158FB2 /* ContinuousGestures.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,9 @@
 		DF6DD39212872D3500158FB2 /* DiscreteGestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiscreteGestures.h; path = Classes/DiscreteGestures.h; sourceTree = "<group>"; };
 		DF6DD39312872D3500158FB2 /* DiscreteGestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiscreteGestures.m; path = Classes/DiscreteGestures.m; sourceTree = "<group>"; };
 		DF6DD39412872D3500158FB2 /* DiscreteGestures.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DiscreteGestures.xib; path = Classes/DiscreteGestures.xib; sourceTree = "<group>"; };
+		DF6DD4EC12874F5600158FB2 /* ContinuousGestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContinuousGestures.h; path = Classes/ContinuousGestures.h; sourceTree = "<group>"; };
+		DF6DD4ED12874F5600158FB2 /* ContinuousGestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContinuousGestures.m; path = Classes/ContinuousGestures.m; sourceTree = "<group>"; };
+		DF6DD4EE12874F5600158FB2 /* ContinuousGestures.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ContinuousGestures.xib; path = Classes/ContinuousGestures.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +143,9 @@
 				DF6DD39212872D3500158FB2 /* DiscreteGestures.h */,
 				DF6DD39312872D3500158FB2 /* DiscreteGestures.m */,
 				DF6DD39412872D3500158FB2 /* DiscreteGestures.xib */,
+				DF6DD4EC12874F5600158FB2 /* ContinuousGestures.h */,
+				DF6DD4ED12874F5600158FB2 /* ContinuousGestures.m */,
+				DF6DD4EE12874F5600158FB2 /* ContinuousGestures.xib */,
 			);
 			name = "Basic Gestures";
 			sourceTree = "<group>";
@@ -215,6 +223,7 @@
 				2804203C108E9BAB000629CD /* DetailView.xib in Resources */,
 				DF5A11D01285B8250034A491 /* GestureInteraction.xib in Resources */,
 				DF6DD39612872D3500158FB2 /* DiscreteGestures.xib in Resources */,
+				DF6DD4F012874F5600158FB2 /* ContinuousGestures.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +241,7 @@
 				DF5A11B71285B61B0034A491 /* ExampleController.m in Sources */,
 				DF5A11CF1285B8250034A491 /* GestureInteraction.m in Sources */,
 				DF6DD39512872D3500158FB2 /* DiscreteGestures.m in Sources */,
+				DF6DD4EF12874F5600158FB2 /* ContinuousGestures.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
