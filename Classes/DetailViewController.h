@@ -26,7 +26,7 @@
 #import "ExampleController.h"
 
 @interface DetailViewController : UIViewController <UIPopoverControllerDelegate, UISplitViewControllerDelegate> {
-  UIPopoverController *popoverController;
+
 }
 
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;

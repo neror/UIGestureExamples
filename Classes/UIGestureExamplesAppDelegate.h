@@ -24,16 +24,10 @@
 
 #import <UIKit/UIKit.h>
 
-
 @class RootViewController;
 @class DetailViewController;
 
 @interface UIGestureExamplesAppDelegate : NSObject <UIApplicationDelegate> {
-  UIWindow *window;
-  UISplitViewController *splitViewController;
-  
-  RootViewController *rootViewController;
-  DetailViewController *detailViewController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

@@ -25,20 +25,23 @@
 #import "DetailViewController.h"
 #import "RootViewController.h"
 
-@interface DetailViewController ()
+@interface DetailViewController() {
+}
 
 @property (nonatomic, retain) UIPopoverController *popoverController;
+
 - (void)handleLongPress:(UILongPressGestureRecognizer *)recognizer;
 - (void)resetCurrentExample;
+
 @end
 
 @implementation DetailViewController
 
-@synthesize toolbar;
-@synthesize popoverController;
-@synthesize exampleController;
-@synthesize contentView;
-@synthesize titleLabel;
+@synthesize toolbar = toolbar_;
+@synthesize popoverController = popoverController_;
+@synthesize exampleController = exampleController_;
+@synthesize contentView = contentView_;
+@synthesize titleLabel = titleLabel_;
 
 - (void)viewDidLoad {
   UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
@@ -51,11 +54,11 @@
 }
 
 - (void)dealloc {
-  [popoverController release];
-  [toolbar release];
-  [exampleController release];
-  [contentView release];
-  [titleLabel release];
+  [popoverController_ release], popoverController_ = nil;
+  [toolbar_ release], toolbar_ = nil;
+  [exampleController_ release], exampleController_ = nil;
+  [contentView_ release], contentView_ = nil;
+  [titleLabel_ release], titleLabel_ = nil;
   [super dealloc];
 }
 
@@ -84,20 +87,27 @@
 #pragma mark Managing the detail item
 
 - (void)setExampleController:(ExampleController *)newExample {
-  if (exampleController != newExample) {
-    [exampleController viewWillDisappear:YES];
+  if(exampleController_ != newExample) {
+    [exampleController_ viewWillDisappear:YES];
     [newExample viewWillAppear:YES];
-    [exampleController.view removeFromSuperview];
-    [self.contentView insertSubview:newExample.view belowSubview:self.toolbar];
-    [exampleController viewDidDisappear:YES];
-    [newExample viewDidAppear:YES];
-    
-    [self.titleLabel setText:[[newExample class] friendlyName]];
-    
-    [exampleController release];
-    exampleController = [newExample retain];
-  }
 
+    ExampleController *currentController = exampleController_;
+    
+    newExample.view.alpha = 0.f;
+    [UIView animateWithDuration:.25f animations:^{
+      [self.contentView insertSubview:newExample.view belowSubview:self.toolbar];
+      [self.titleLabel setText:[[newExample class] friendlyName]];
+      newExample.view.alpha = 1.f;
+      currentController.view.alpha = 0.f;
+    } completion:^(BOOL finished) {
+      [currentController.view removeFromSuperview];
+      [currentController viewDidDisappear:YES];
+      [newExample viewDidAppear:YES];
+    }];
+
+    [exampleController_ release];
+    exampleController_ = [newExample retain];
+  }
   if (self.popoverController != nil) {
     [self.popoverController dismissPopoverAnimated:YES];
   }        
@@ -113,9 +123,9 @@
 {
     
   barButtonItem.title = @"Gesture Examples";
-  NSMutableArray *items = [[toolbar items] mutableCopy];
+  NSMutableArray *items = [[self.toolbar items] mutableCopy];
   [items insertObject:barButtonItem atIndex:0];
-  [toolbar setItems:items animated:YES];
+  [self.toolbar setItems:items animated:YES];
   [items release];
   self.popoverController = pc;
 }
@@ -124,9 +134,9 @@
      willShowViewController:(UIViewController *)aViewController 
   invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-  NSMutableArray *items = [[toolbar items] mutableCopy];
+  NSMutableArray *items = [[self.toolbar items] mutableCopy];
   [items removeObjectAtIndex:0];
-  [toolbar setItems:items animated:YES];
+  [self.toolbar setItems:items animated:YES];
   [items release];
   self.popoverController = nil;
 }

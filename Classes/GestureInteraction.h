@@ -28,8 +28,6 @@
 
 
 @interface GestureInteraction : ExampleController <UIGestureRecognizerDelegate> {
-  NSDictionary *stateColorMap_;
-  CAShapeLayer *centroidLayer_;
 }
 
 @property (nonatomic, retain) IBOutlet UIView *containerView;

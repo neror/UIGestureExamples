@@ -29,39 +29,25 @@
 
 @implementation UIGestureExamplesAppDelegate
 
-@synthesize window, splitViewController, rootViewController, detailViewController;
+@synthesize window = window_;
+@synthesize splitViewController = splitViewController_;
+@synthesize rootViewController = rootViewController_;
+@synthesize detailViewController = detailViewController_;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-  [self.window addSubview:splitViewController.view];
+  [self.window addSubview:self.splitViewController.view];
   [self.window makeKeyAndVisible];
   return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-}
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-}
-
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
-}
-
-
 - (void)dealloc {
-  [splitViewController release];
-  [window release];
+  [splitViewController_ release], splitViewController_ = nil;
+  [rootViewController_ release], rootViewController_ = nil;
+  [detailViewController_ release], detailViewController_ = nil;
+  [window_ release], window_ = nil;
   [super dealloc];
 }
 

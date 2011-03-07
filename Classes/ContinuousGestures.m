@@ -23,9 +23,8 @@
 */
 
 #import "ContinuousGestures.h"
-#import <QuartzCore/QuartzCore.h>
 
-@interface ContinuousGestures (GestureRecognition)
+@interface ContinuousGestures()
 
 - (void)addGestureRecognizersToView:(UIView *)theView;
 - (void)adjustAnchorPointForGestureRecognizer:(UIGestureRecognizer *)recognizer;
@@ -40,10 +39,10 @@
 
 @implementation ContinuousGestures
 
-@synthesize redView;
-@synthesize greenView;
-@synthesize blueView;
-@synthesize orangeView;
+@synthesize redView = redView_;
+@synthesize greenView = greenView_;
+@synthesize blueView = blueView_;
+@synthesize orangeView = orangeView_;
 
 + (NSString *)friendlyName {
   return @"Continuous Gestures";
@@ -70,10 +69,10 @@
 }
 
 - (void)dealloc {
-  [redView release];
-  [greenView release];
-  [blueView release];
-  [orangeView release];
+  [redView_ release], redView_ = nil;
+  [greenView_ release], greenView_ = nil;
+  [blueView_ release], blueView_ = nil;
+  [orangeView_ release], orangeView_ = nil;
   [super dealloc];
 }
 

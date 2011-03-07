@@ -29,9 +29,16 @@
 #import "DiscreteGestures.h"
 #import "ContinuousGestures.h"
 
+@interface RootViewController()
+
+@property (copy) NSArray *examples;
+
+@end
+
 @implementation RootViewController
 
-@synthesize detailViewController;
+@synthesize detailViewController = detailViewController_;
+@synthesize examples = examples_;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -41,12 +48,12 @@
   self.clearsSelectionOnViewWillAppear = NO;
   self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
   
-  examples_ = [[NSArray alloc] initWithObjects:[DiscreteGestures class], [ContinuousGestures class], [GestureInteraction class], nil];
+  self.examples = [NSArray arrayWithObjects:[DiscreteGestures class], [ContinuousGestures class], [GestureInteraction class], nil];
 }
 
 - (void)dealloc {
-  [detailViewController release];
-  [examples_ release];
+  [detailViewController_ release], detailViewController_ = nil;
+  [examples_ release], examples_ = nil;
   [super dealloc];
 }
 
@@ -63,7 +70,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section {
-  return [examples_ count];
+  return [self.examples count];
 }
 
 
@@ -77,7 +84,7 @@
     cell.accessoryType = UITableViewCellAccessoryNone;
   }
   
-  Class example = [examples_ objectAtIndex:indexPath.row];
+  Class example = [self.examples objectAtIndex:indexPath.row];
   
   cell.textLabel.text = [example friendlyName];
   return cell;
@@ -87,9 +94,9 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  Class exampleClass = [examples_ objectAtIndex:indexPath.row];
+  Class exampleClass = [self.examples objectAtIndex:indexPath.row];
   ExampleController *example = [[exampleClass alloc] initWithNibName:nil bundle:nil];
-  detailViewController.exampleController = example;
+  self.detailViewController.exampleController = example;
   [example release];
 }
 

@@ -24,7 +24,11 @@
 
 #import "GestureInteraction.h"
 
-@interface GestureInteraction (Private)
+@interface GestureInteraction() {
+  NSDictionary *stateColorMap_;
+}
+
+@property (nonatomic, retain) CAShapeLayer *centroidLayer;
 
 - (void)handleTap:(UITapGestureRecognizer *)recognizer;
 - (void)handleSwipe:(UISwipeGestureRecognizer *)recognizer;
@@ -35,12 +39,22 @@
 
 @implementation GestureInteraction
 
-@synthesize tapLabel;
-@synthesize swipeLabel;
-@synthesize containerView;
+@synthesize tapLabel = tapLabel_;
+@synthesize swipeLabel = swipeLabel_;
+@synthesize containerView = containerView_;
+@synthesize centroidLayer = centroidLayer_;
 
 + (NSString *)friendlyName {
   return @"Gesture Interaction";
+}
+
+- (void)dealloc {
+  [tapLabel_ release], tapLabel_ = nil;
+  [swipeLabel_ release], swipeLabel_ = nil;
+  [stateColorMap_ release], stateColorMap_ = nil;
+  [containerView_ release], containerView_ = nil;
+  [centroidLayer_ release], centroidLayer_ = nil;
+  [super dealloc];
 }
 
 - (void)setupUI {
@@ -51,15 +65,15 @@
   [self.swipeLabel.layer setBorderWidth:2.f];
   
   CGRect centriodMarkerBounds = CGRectMake(0.f, 0.f, 40.f, 40.f);
-  centroidLayer_ = [[CAShapeLayer alloc] init];
-  centroidLayer_.bounds = centriodMarkerBounds;
-  centroidLayer_.fillColor = [[UIColor orangeColor] CGColor];
-  centroidLayer_.lineWidth = 0.f;
+  self.centroidLayer = [CAShapeLayer layer];
+  self.centroidLayer.bounds = centriodMarkerBounds;
+  self.centroidLayer.fillColor = [[UIColor orangeColor] CGColor];
+  self.centroidLayer.lineWidth = 0.f;
   CGMutablePathRef circle = CGPathCreateMutable();
   CGPathAddEllipseInRect(circle, NULL, centriodMarkerBounds);
-  centroidLayer_.path = circle;
+  self.centroidLayer.path = circle;
   CGPathRelease(circle);
-  centroidLayer_.shouldRasterize = YES;
+  self.centroidLayer.shouldRasterize = YES;
 }
 
 - (void)viewDidLoad {
@@ -104,18 +118,10 @@
 }
 
 - (void)viewDidUnload {
-  [centroidLayer_ release];
+  self.centroidLayer = nil;
   [super viewDidUnload];
 }
 
-- (void)dealloc {
-  [tapLabel release];
-  [swipeLabel release];
-  [stateColorMap_ release];
-  [containerView release];
-  [centroidLayer_ release];
-  [super dealloc];
-}
 
 - (void)resetExample {
   self.tapLabel.backgroundColor = [UIColor blackColor];
@@ -147,16 +153,16 @@
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer {
   [[recognizer view] setBackgroundColor:[stateColorMap_ objectForKey:[NSNumber numberWithInt:[recognizer state]]]];
   if([recognizer state] == UIGestureRecognizerStateBegan) {
-    [self.view.layer addSublayer:centroidLayer_];
+    [self.view.layer addSublayer:self.centroidLayer];
   }
   if([recognizer state] == UIGestureRecognizerStateChanged || [recognizer state] == UIGestureRecognizerStateBegan) {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
-    centroidLayer_.position = [recognizer locationInView:self.view];
+    self.centroidLayer.position = [recognizer locationInView:self.view];
     [CATransaction commit];
   }
   if([recognizer state] == UIGestureRecognizerStateEnded) {
-    [centroidLayer_ removeFromSuperlayer];
+    [self.centroidLayer removeFromSuperlayer];
   }
 }
 

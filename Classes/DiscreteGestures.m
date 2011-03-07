@@ -24,7 +24,11 @@
 
 #import "DiscreteGestures.h"
 
-@interface DiscreteGestures (GestureHandlers)
+@interface DiscreteGestures() {
+  CAShapeLayer *eventIndicator_;
+}
+
+@property (readonly) CALayer *eventIndicator;
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer;
 - (void)handleTwoFingerDoubleTap:(UITapGestureRecognizer *)recognizer;
@@ -35,15 +39,15 @@
 
 @implementation DiscreteGestures
 
-@synthesize eventTypeLabel;
+@synthesize eventTypeLabel = eventTypeLabel_;
 
 + (NSString *)friendlyName {
   return @"Discrete Gestures";
 }
 
 - (void)dealloc {
-  [eventIndicator_ release];
-  [eventTypeLabel release];
+  [eventIndicator_ release], eventIndicator_ = nil;
+  [eventTypeLabel_ release], eventTypeLabel_ = nil;
   [super dealloc];
 }
 
